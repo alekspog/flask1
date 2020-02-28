@@ -38,9 +38,8 @@ def render_tour(id):
 
 def get_departure_tours(departure):
     filtered_tours = []
-    for index, tour in tours.items():
+    for tour in tours_list:
         if tour["departure"] == str(departure):
-            tour["id"] = index
             filtered_tours.append(tour)
 
     return filtered_tours
@@ -70,7 +69,6 @@ def convert_tours_data(tours):
 
 
 tours_list = convert_tours_data(tours)
-print(tours_list)
 
 
 app.run('0.0.0.0', 8000, debug=True)
