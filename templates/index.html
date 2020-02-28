@@ -46,14 +46,14 @@
     <!-- CARDS -->
 
     <div class="row mt-5" data-test="cards">
-        {% for index in range(1, 7) %}
+        {% for tour in (tours|sort(attribute='price'))[:6] %}
         <div class="col-4" data-test="card">
             <div class="card mb-3" >
-            <img src={{ tours[index].picture }} class="card-img-top img-fluid" data-test="picture">
+            <img src="{{ tour.picture }}" class="card-img-top img-fluid" data-test="picture">
             <div class="card-body">
-              <h5 class="card-title"> {{ tours[index].title }}</h5>
-             <p class="card-text">{{ tours[index].description }}</p>
-                <a href="" class="btn btn-sm btn-primary" data-test="tourlink">Подробнее</a>
+              <h5 class="card-title"> {{ tour.title }}</h5>
+             <p class="card-text">{{ tour.description }}</p>
+                <a href="/tour/{{ tour.id }}" class="btn btn-sm btn-primary" data-test="tourlink">Подробнее</a>
             </div>
             </div>
         </div>

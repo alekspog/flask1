@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template("index.html", tours=tours)
+    return render_template("index.html", tours=tours_list)
 
 
 @app.route('/departure/<departure>/')
@@ -36,7 +36,6 @@ def get_departure_tours(departure):
             tour["id"] = index
             filtered_tours.append(tour)
 
-    # print("find tours: ", filtered_tours)
     return filtered_tours
 
 
@@ -52,6 +51,18 @@ def get_tours_prices(tours):
     for tour in tours:
         prices.append(tour["price"])
     return prices
+
+
+def convert_tours_data(tours):
+    converted_tours = []
+    for index, tour in tours.items():
+        tour["id"] = index
+        converted_tours.append(tour)
+
+    return converted_tours
+
+
+tours_list = convert_tours_data(tours)
 
 
 app.run('0.0.0.0', 8000, debug=True)
