@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template("index.html", tours=tours_list)
+    return render_template("index.html", tours=tours_list, departures=departures)
 
 
 @app.route('/departure/<departure>/')
@@ -15,18 +15,25 @@ def render_departure(departure):
     prices = get_tours_prices(departure_tours)
     nights = get_tours_nights(departure_tours)
 
-    departure_info = {}
-    departure_info["departure_text"] = departures[departure]
-    departure_info["min_price"] = min(prices)
-    departure_info["max_price"] = max(prices)
-    departure_info["min_nights"] = min(nights)
-    departure_info["max_nights"] = max(nights)
-    return render_template("departure.html", departures=departure_info, tours=departure_tours)
+    departures_info = {
+         "departure_text": departures[departure],
+         "min_price": min(prices),
+         "max_price": max(prices),
+         "min_nights": min(nights),
+         "max_nights": max(nights)
+    }
+    return render_template("departure.html", tours=departure_tours, departures=departures,
+                           departures_info=departures_info)
 
 
 @app.route('/tour/<int:id>/')
 def render_tour(id):
-    return render_template("tour.html", tour=tours[id], departure=departures[tours[id]["departure"]])
+    for tour in tours_list:
+        if tour['id'] == id:
+            selected_tour = tour
+            return render_template("tour.html", tour=selected_tour, departures=departures, departure=departures[tour["departure"]])
+
+    return render_template("404.html", departures=departures)
 
 
 def get_departure_tours(departure):
@@ -63,6 +70,7 @@ def convert_tours_data(tours):
 
 
 tours_list = convert_tours_data(tours)
+print(tours_list)
 
 
 app.run('0.0.0.0', 8000, debug=True)
